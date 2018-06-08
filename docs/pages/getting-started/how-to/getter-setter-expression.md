@@ -93,6 +93,7 @@ setterBirthDateProperty(emp, new DateTime(1990, 6, 5));
 
 Console.WriteLine("Name: {0}, DOB: {1}", emp.Name, emp.BirthDate);
 ```
+
 ## Getter
 
 You can get the property value of a specified object by using the `CreateGetter` method.
