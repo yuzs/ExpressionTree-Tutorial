@@ -4,7 +4,7 @@ Conditional Expression represents an expression that has a conditional operator.
 
 ## Condition
 
-You can use the `Condition` factory method to create a `ConditionalExpression`.
+You can use the `Expression.Condition` factory method to create a `ConditionalExpression`.
 
 ```csharp
 int num = 60;
@@ -24,19 +24,18 @@ The Condition method evaluates the first expression which is the test condition 
 
 ## IfThen
 
-The `IfThen` method creates a `ConditionalExpression` that represents a conditional block with an if statement.
+The `Expression.IfThen` method creates a `ConditionalExpression` that represents a conditional block with an if statement.
 
 ```csharp
 int num = 60;
 
-Expression ifThenExpr = Expression.IfThen(
-    Expression.Constant(num > 10),
-    Expression.Call(
-        null,
-        typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
-        Expression.Constant("num is greater than 10")
-        )
-    );
+Expression testCondition = Expression.Constant(num > 10);
+
+MethodCallExpression ifTrueBlock = Expression.Call(null,
+    typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
+    Expression.Constant("num is greater than 10"));
+
+Expression ifThenExpr = Expression.IfThen(testCondition, ifTrueBlock);
 
 Expression.Lambda<Action>(ifThenExpr).Compile()();
 ```
@@ -45,26 +44,71 @@ This example shows how to create an expression that represents an if block.
 
 ## IfThenElse
 
-The `IfThenElse` method creates a `ConditionalExpression` that represents a conditional block with if and else statements.
+The `Expression.IfThenElse` method creates a `ConditionalExpression` that represents a conditional block with if and else statements.
 
 ```csharp
 int num = 60;
 
+Expression testCondition = Expression.Constant(num > 10);
+
+MethodCallExpression ifTrueBlock = Expression.Call(null,
+    typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
+    Expression.Constant("num is greater than 10"));
+
+MethodCallExpression ifFalseBlock = Expression.Call(null,
+    typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
+    Expression.Constant("num is less than 10"));
+
 Expression ifThenElseExpr = Expression.IfThenElse(
-    Expression.Constant(num > 170),
-    Expression.Call(
-        null,
-        typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
-        Expression.Constant("num is greater than 10")
-        ),
-    Expression.Call(
-        null,
-        typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
-        Expression.Constant("num is less than 10")
-        )
-    );
+    testCondition, 
+    ifTrueBlock, 
+    ifFalseBlock);
 
 Expression.Lambda<Action>(ifThenElseExpr).Compile()();
 ```
 
 This example shows how to create an expression that represents an if-else block.
+
+## Switch 
+
+The `Expression.Switch` creates a `SwitchExpression` that represents a switch statement that has a default case. 
+
+ - All SwitchCase objects in a SwitchExpression object must have the same type unless the SwitchExpression has the type void.
+ - Each SwitchCase object has an implicit break statement, which means that there is no implicit fall through from one case label to another.
+ - If switchValue does not match any of the cases, the default case represented by default body is run.
+
+```csharp
+ConstantExpression switchValue = Expression.Constant(4);
+
+MethodCallExpression defaultCase = Expression.Call(null, 
+    typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }), 
+    Expression.Constant("Default Case"));
+
+MethodCallExpression case1 = Expression.Call(null,
+    typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
+    Expression.Constant("First Case"));
+
+MethodCallExpression case2 = Expression.Call(null,
+    typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
+    Expression.Constant("Second Case"));
+
+MethodCallExpression case3 = Expression.Call(null,
+    typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
+    Expression.Constant("Third Case"));
+
+// This expression represents a switch statement 
+// that has a default case.
+SwitchExpression switchExpr =
+    Expression.Switch(
+        switchValue,
+        defaultCase,
+        new SwitchCase[] 
+        {
+            Expression.SwitchCase(case1,Expression.Constant(1)),
+            Expression.SwitchCase(case2,Expression.Constant(2)),
+            Expression.SwitchCase(case3,Expression.Constant(3))
+        }
+    );
+
+Expression.Lambda<Action>(switchExpr).Compile()();
+```
