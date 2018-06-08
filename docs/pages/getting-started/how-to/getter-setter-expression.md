@@ -15,52 +15,100 @@ public class Employee
 }
 ```
 
-## Setter
-
-You can set the property value of a specified object by using the `PropertyInfo.SetValue` method.
+The following class contains implementation for getter/setter using expression APIs
 
 ```csharp
-public static void SetPropertyValue<T, TValue>(this T target, Expression<Func<T, TValue>> memberLamda, TValue value)
+public static class ExpressionUtils
 {
-    var memberSelectorExpression = memberLamda.Body as MemberExpression;
-    if (memberSelectorExpression != null)
+    public static Action<TEntity, TProperty> CreateSetter<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> property)
     {
-        var property = memberSelectorExpression.Member as PropertyInfo;
-        if (property != null)
+        PropertyInfo propertyInfo = ExpressionUtils.GetProperty(property);
+
+        ParameterExpression instance = Expression.Parameter(typeof(TEntity), "instance");
+        ParameterExpression parameter = Expression.Parameter(typeof(TProperty), "param");
+
+        var body = Expression.Call(instance, propertyInfo.GetSetMethod(), parameter);
+        var parameters = new ParameterExpression[] { instance, parameter };
+
+        return Expression.Lambda<Action<TEntity, TProperty>>(body, parameters).Compile();
+    }
+
+    public static Func<TEntity, TProperty> CreateGetter<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> property)
+    {
+        PropertyInfo propertyInfo = ExpressionUtils.GetProperty(property);
+
+        ParameterExpression instance = Expression.Parameter(typeof(TEntity), "instance");
+
+        var body = Expression.Call(instance, propertyInfo.GetGetMethod());
+        var parameters = new ParameterExpression[] { instance };
+
+        return Expression.Lambda<Func<TEntity, TProperty>>(body, parameters).Compile();
+    }
+
+    public static PropertyInfo GetProperty<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expression)
+    {
+        var member = GetMemberExpression(expression).Member;
+        var property = member as PropertyInfo;
+        if (property == null)
         {
-            property.SetValue(target, value, null);
+            throw new InvalidOperationException(string.Format("Member with Name '{0}' is not a property.", member.Name));
         }
+        return property;
+    }
+
+    private static MemberExpression GetMemberExpression<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expression)
+    {
+        MemberExpression memberExpression = null;
+        if (expression.Body.NodeType == ExpressionType.Convert)
+        {
+            var body = (UnaryExpression)expression.Body;
+            memberExpression = body.Operand as MemberExpression;
+        }
+        else if (expression.Body.NodeType == ExpressionType.MemberAccess)
+        {
+            memberExpression = expression.Body as MemberExpression;
+        }
+
+        if (memberExpression == null)
+        {
+            throw new ArgumentException("Not a member access", "expression");
+        }
+
+        return memberExpression;
     }
 }
+```
+## Setter
+
+You can set the property value of a specified object by using the `CreateSetter` method.
+
+```csharp
+var setterNameProperty = ExpressionUtils.CreateSetter<Employee, string>(x => x.Name);
+var setterBirthDateProperty = ExpressionUtils.CreateSetter<Employee, DateTime>(x => x.BirthDate);
+
+Employee emp = new Employee();
+
+setterNameProperty(emp, "John");
+setterBirthDateProperty(emp, new DateTime(1990, 6, 5));
+
+Console.WriteLine("Name: {0}, DOB: {1}", emp.Name, emp.BirthDate);
 ```
 ## Getter
 
-You can get the property value of a specified object by using the `PropertyInfo.GetValue` method.
+You can get the property value of a specified object by using the `CreateGetter` method.
 
 ```csharp
-public static TValue GetPropertyValue<T, TValue>(this T target, Expression<Func<T, TValue>> memberLamda)
+var getterNameProperty = ExpressionUtils.CreateGetter<Employee, string>(x => x.Name);
+var getterBirthDateProperty = ExpressionUtils.CreateGetter<Employee, DateTime>(x => x.BirthDate);
+
+Employee emp1 = new Employee()
 {
-    var memberSelectorExpression = memberLamda.Body as MemberExpression;
-    if (memberSelectorExpression != null)
-    {
-        var property = memberSelectorExpression.Member as PropertyInfo;
-        if (property != null)
-        {
-            return (TValue)property.GetValue(target, null);
-        }
-    }
+    Name = "John",
+    BirthDate = new DateTime(1990, 6, 5)
+};
 
-    return default(TValue);
-}
-```
+var name = getterNameProperty(emp1);
+var birthDate = getterBirthDateProperty(emp1);
 
-You can set/get the property on of a specified object.
-
-```csharp
-var customer = new Employee();
-customer.SetPropertyValue(c => c.Name, "John");
-customer.SetPropertyValue(c => c.BirthDate, new DateTime(1990, 6, 5));
-
-var title = customer.GetPropertyValue(c => c.Name);
-var birthDate = customer.GetPropertyValue(c => c.BirthDate);
+Console.WriteLine("Name: {0}, DOB: {1}", name, birthDate);
 ```
