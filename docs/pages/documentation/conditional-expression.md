@@ -32,10 +32,10 @@ int num = 60;
 Expression ifThenExpr = Expression.IfThen(
     Expression.Constant(num > 10),
     Expression.Call(
-            null,
-            typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
-            Expression.Constant("num is greater than 10")
-           )
+        null,
+        typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
+        Expression.Constant("num is greater than 10")
+        )
     );
 
 Expression.Lambda<Action>(ifThenExpr).Compile()();
@@ -49,17 +49,18 @@ The `IfThenElse` method creates a `ConditionalExpression` that represents a cond
 
 ```csharp
 int num = 60;
+
 Expression ifThenElseExpr = Expression.IfThenElse(
     Expression.Constant(num > 170),
     Expression.Call(
-            null,
-            typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
-            Expression.Constant("num is greater than 10")
+        null,
+        typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
+        Expression.Constant("num is greater than 10")
         ),
-        Expression.Call(
-            null,
-            typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
-            Expression.Constant("num is less than 10")
+    Expression.Call(
+        null,
+        typeof(Console).GetMethod("WriteLine", new Type[] { typeof(String) }),
+        Expression.Constant("num is less than 10")
         )
     );
 
