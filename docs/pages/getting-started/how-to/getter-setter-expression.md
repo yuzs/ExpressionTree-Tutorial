@@ -113,3 +113,5 @@ var birthDate = getterBirthDateProperty(emp1);
 
 Console.WriteLine("Name: {0}, DOB: {1}", name, birthDate);
 ```
+
+{% include component-try-it.html href='https://dotnetfiddle.net/IiTlLS' %}
