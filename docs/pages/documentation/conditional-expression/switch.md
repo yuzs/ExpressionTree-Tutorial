@@ -54,3 +54,5 @@ SwitchExpression switchExpr =
 
 Expression.Lambda<Action>(switchExpr).Compile()();
 ```
+
+{% include component-try-it.html href='https://dotnetfiddle.net/NOpWh7' %}

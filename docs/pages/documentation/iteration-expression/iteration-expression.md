@@ -47,3 +47,4 @@ Console.WriteLine(factorial(6));
 
 You aren't limited in what you can build using Expression APIs. However, the more complicated expression tree that you want to build, the more difficult the code is to manage and to read.
 
+{% include component-try-it.html href='https://dotnetfiddle.net/2K6kd1' %}
