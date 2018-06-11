@@ -52,3 +52,5 @@ var factorial = Expression.Lambda<Func<int, int>>(body, nArgument).Compile();
 
 Console.WriteLine(factorial(6));
 ```
+
+{% include component-try-it.html href='https://dotnetfiddle.net/krNPrL' %}
