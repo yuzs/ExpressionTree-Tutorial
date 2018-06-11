@@ -1,6 +1,17 @@
 # For
 
-A similar method for generating 'for' loops.
+You can build an expression tree to perform a for loop by using `Expression.Loop` method. For example, you have the following code.
+
+```csharp
+int initValue = 0;
+int maxValue
+for (int loopVar = initValue; loopVar < maxValue; loopVar++)
+{
+    Console.WriteLine(loopVar);
+}
+```
+
+Here is the code that is required to build the same functionality using expression tree. 
 
 ```csharp
 public static Expression For(ParameterExpression loopVar, Expression initValue, Expression condition, Expression increment, Expression loopContent)

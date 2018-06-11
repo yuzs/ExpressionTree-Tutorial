@@ -4,7 +4,22 @@ Conditional Expression represents an expression that has a conditional operator.
 
 ## Condition
 
-You can use the `Expression.Condition` factory method to create a `ConditionalExpression`.
+You can use the `Expression.Condition` factory method to create a `ConditionalExpression`. For example, you have the following code.
+
+```csharp
+int num = 60;
+
+if(num > 10)
+{
+    Console.WriteLine("num is greater than 10");
+}
+else
+{
+    Console.WriteLine("num is less than or equan to 10");
+}
+```
+
+Here is the code that is required to build the same functionality using expression tree.
 
 ```csharp
 int num = 60;
@@ -12,7 +27,7 @@ int num = 60;
 Expression conditionExpr = Expression.Condition(
     Expression.Constant(num > 10),
     Expression.Constant("num is greater than 10"),
-    Expression.Constant("num is smaller than 10")
+    Expression.Constant("num is smaller or equal to 10")
     );
 
 // The following statement first creates an expression tree,
