@@ -76,4 +76,4 @@ MethodCallExpression orderByCallExpression = Expression.Call(
 // Create an executable query from the expression tree.  
 IQueryable<string> results = queryableData.Provider.CreateQuery<string>(orderByCallExpression);
 ```
- 
+{% include component-try-it.html href='https://dotnetfiddle.net/LrXICy' %}
