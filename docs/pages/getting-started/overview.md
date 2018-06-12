@@ -42,4 +42,4 @@ Expression<Func<int, bool>> expression =
 var eResults = expression.Compile();
 ```
 
-{% include component-try-it.html href='https://dotnetfiddle.net/shw64W' %}
+[Try it online](https://dotnetfiddle.net/shw64W)

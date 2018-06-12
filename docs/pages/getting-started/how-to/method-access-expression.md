@@ -19,7 +19,7 @@ Expression.Constant(text), typeof(String).GetMethod("ToUpper", new Type[] { }));
 // then compiles it and then executes it.  
 Console.WriteLine(Expression.Lambda<Func<String>>(callExpr).Compile()());
 ```
-{% include component-try-it.html href='https://dotnetfiddle.net/YRwj9E' %}
+[Try it online](https://dotnetfiddle.net/YRwj9E)
 
 You can also call your custom methods using `Expression.Call`. For example, we have defined the following function which takes two integer arguments and returns the sum of them.
 
@@ -52,4 +52,4 @@ Func<int> func = Expression.Lambda<Func<int>>(expr).Compile();
 Console.WriteLine(func.Invoke());
 ```
 
-{% include component-try-it.html href='https://dotnetfiddle.net/538Qhi' %}
+[Try it online](https://dotnetfiddle.net/538Qhi)

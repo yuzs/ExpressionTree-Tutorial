@@ -60,4 +60,4 @@ var results = Expression.Lambda<Action<List<int>>>(loop, collection).Compile();
 results(list);
 ```
 
-{% include component-try-it.html href='https://dotnetfiddle.net/Pl89Gr' %}
+[Try it online](https://dotnetfiddle.net/Pl89Gr)

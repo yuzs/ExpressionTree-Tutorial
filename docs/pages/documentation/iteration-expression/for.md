@@ -58,4 +58,4 @@ var result = Expression.Lambda<Action<int>>(loop, loopVar).Compile();
 result(initValue);
 ```
 
-{% include component-try-it.html href='https://dotnetfiddle.net/dPHfT8' %}
+[Try it online](https://dotnetfiddle.net/dPHfT8)

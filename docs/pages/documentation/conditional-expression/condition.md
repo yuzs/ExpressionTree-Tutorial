@@ -37,4 +37,4 @@ Console.WriteLine(Expression.Lambda<Func<string>>(conditionExpr).Compile()());
 
 The Condition method evaluates the first expression which is the test condition and if it is true, the second expression will be executed otherwise the third expression will be executed. 
 
-{% include component-try-it.html href='https://dotnetfiddle.net/3Cjycl' %}
+[Try it online](https://dotnetfiddle.net/3Cjycl)

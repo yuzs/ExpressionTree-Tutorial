@@ -34,4 +34,4 @@ public static Expression WriteLineExpression(string s)
 }
 ``` 
 
-{% include component-try-it.html href='https://dotnetfiddle.net/bHe6tK' %}
+[Try it online](https://dotnetfiddle.net/bHe6tK)
