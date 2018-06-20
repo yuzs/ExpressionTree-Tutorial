@@ -1,6 +1,6 @@
 # SubtractAssign
 
-You can build an expression tree which contains an subtraction assignment operation using `Expression.SubtractAssign` method. For example, you have the following code.
+You can build an expression tree which contains a subtraction assignment operation using `Expression.SubtractAssign` method. For example, you have the following code.
 
 ```csharp
 int myInt;

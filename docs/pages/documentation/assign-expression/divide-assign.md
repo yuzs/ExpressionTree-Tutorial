@@ -1,11 +1,11 @@
-# MultiplyAssign
+# DivideAssign
 
-You can build an expression tree which contains a multiplication assignment operation using `Expression.MultiplyAssign` method. For example, you have the following code.
+You can build an expression tree which contains a division assignment operation using `Expression.DivideAssign` method. For example, you have the following code.
 
 ```csharp
 int myInt;
-myInt = 12;
-myInt *= 5;
+myInt = 60;
+myInt /= 5;
 Console.WriteLine(myInt);
 ```
 
@@ -16,8 +16,8 @@ ParameterExpression myIntVariableExpr = Expression.Variable(typeof(int), "myInt"
 
 BlockExpression addAssignExpr = Expression.Block(
     new ParameterExpression[] { myIntVariableExpr },
-    Expression.Assign(myIntVariableExpr, Expression.Constant(12)),
-    Expression.MultiplyAssign(
+    Expression.Assign(myIntVariableExpr, Expression.Constant(60)),
+    Expression.DivideAssign(
         myIntVariableExpr,
         Expression.Constant(5)
     )
@@ -26,4 +26,4 @@ BlockExpression addAssignExpr = Expression.Block(
 Console.WriteLine(Expression.Lambda<Func<int>>(addAssignExpr).Compile()());
 ```
 
-[Try it online](https://dotnetfiddle.net/Aeyne0)
+[Try it online](https://dotnetfiddle.net/XXDB4I)
