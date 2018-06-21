@@ -15,7 +15,6 @@ Expression greaterThanExpr = Expression.Equal(
     Expression.Constant(31)
 );
 
-
 Console.WriteLine(Expression.Lambda<Func<bool>>(greaterThanExpr).Compile()());
 ```
 
