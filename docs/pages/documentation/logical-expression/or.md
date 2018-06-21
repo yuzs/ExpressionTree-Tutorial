@@ -3,7 +3,7 @@
 You can build an expression tree which contains a bitwise **OR** operation using `Expression.Or` method. For example, you have the following code.
 
 ```csharp
-bool value = true || false;
+bool value = true | false;
 Console.WriteLine(value);
 ```
 
