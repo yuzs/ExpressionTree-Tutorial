@@ -10,13 +10,13 @@ Console.WriteLine(value);
 Here is the code that is required to build the same functionality using expression tree. 
 
 ```csharp
-Expression greaterThanExpr = Expression.LessThanOrEqual(
+Expression expr = Expression.LessThanOrEqual(
     Expression.Constant(31),
     Expression.Constant(31)
 );
 
 
-Console.WriteLine(Expression.Lambda<Func<bool>>(greaterThanExpr).Compile()());
+Console.WriteLine(Expression.Lambda<Func<bool>>(expr).Compile()());
 ```
 
 [Try it online](https://dotnetfiddle.net/QVkw3B)
