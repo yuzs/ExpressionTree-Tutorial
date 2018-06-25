@@ -22,6 +22,7 @@ In this example, the C# compiler creates an expression tree that represents the 
 
 ```csharp
 Expression<Func<int, bool>> expression = val => val < 10;
+var cResults = cExpression.Compile();
 ```
 
 ### Using the API
@@ -37,5 +38,8 @@ Expression<Func<int, bool>> expression =
     Expression.Lambda<Func<int, bool>>(
         numLessThanTen,
         new ParameterExpression[] { numParam });
+
+var eResults = expression.Compile();
 ```
 
+[Try it online](https://dotnetfiddle.net/shw64W)

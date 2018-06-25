@@ -1,6 +1,17 @@
 # Foreach
 
-You can build an expression tree to perform a foreach loop by using `Expression.Loop` method.
+You can build an expression tree to perform a foreach loop by using `Expression.Loop` method. For example, you have the following code.
+
+```csharp
+var list = new List<int>() { 10, 20, 30 };
+
+foreach (var loopVar in list)
+{
+    Console.WriteLine(loopVar);
+}
+```
+
+Here is the code that is required to build the same functionality using expression tree. 
 
 ```csharp
 public static Expression ForEach(Expression collection, ParameterExpression loopVar, Expression loopContent)
@@ -48,3 +59,5 @@ var loop = ForEach(collection, loopVar, loopBody);
 var results = Expression.Lambda<Action<List<int>>>(loop, collection).Compile();
 results(list);
 ```
+
+[Try it online](https://dotnetfiddle.net/Pl89Gr)

@@ -1,8 +1,18 @@
 # Iteration Expression 
 
-Iteration Expression or loop expression represents an infinite loop, and it can be exited with **break**.
+Iteration Expression or loop expression represents an infinite loop, and it can be exited with **break**. For example, you have the following code.
 
-The following example demonstrates how to create a block expression that contains a LoopExpression object by using the Loop method.
+```csharp
+var result = 1;
+while (value > 1)
+{
+    result = result * value;
+    value--;
+}
+Console.WriteLine(result);
+```
+
+Here is the code that is required to build the same functionality using expression tree. The following example demonstrates how to create a block expression that contains a LoopExpression object by using the Loop method.
 
 ```csharp
 ParameterExpression value = Expression.Parameter(typeof(int), "value");
@@ -37,3 +47,4 @@ Console.WriteLine(factorial(6));
 
 You aren't limited in what you can build using Expression APIs. However, the more complicated expression tree that you want to build, the more difficult the code is to manage and to read.
 
+[Try it online](https://dotnetfiddle.net/2K6kd1)

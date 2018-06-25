@@ -113,3 +113,5 @@ var birthDate = getterBirthDateProperty(emp1);
 
 Console.WriteLine("Name: {0}, DOB: {1}", name, birthDate);
 ```
+
+[Try it online](https://dotnetfiddle.net/IiTlLS)
