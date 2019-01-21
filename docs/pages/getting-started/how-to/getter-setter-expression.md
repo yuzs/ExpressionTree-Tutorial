@@ -27,7 +27,7 @@ public static class ExpressionUtils
         ParameterExpression instance = Expression.Parameter(typeof(TEntity), "instance");
         ParameterExpression propertyValue = Expression.Parameter(typeof(TProperty), "propertyValue");
 
-		var body = Expression.Assign(Expression.Property(instance, name), propertyValue);
+	var body = Expression.Assign(Expression.Property(instance, name), propertyValue);
 
         return Expression.Lambda<Action<TEntity, TProperty>>(body, instance, propertyValue).Compile();
     }
