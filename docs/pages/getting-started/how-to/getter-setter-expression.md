@@ -47,8 +47,8 @@ public static class ExpressionUtils
 You can set the property value of a specified object by using the `CreateSetter` method.
 
 ```csharp
-var setterNameProperty = ExpressionUtils.CreateSetter<Employee, string>(x => x.Name);
-var setterBirthDateProperty = ExpressionUtils.CreateSetter<Employee, DateTime>(x => x.BirthDate);
+var setterNameProperty = ExpressionUtils.CreateSetter<Employee, string>("Name");
+var setterBirthDateProperty = ExpressionUtils.CreateSetter<Employee, DateTime>("BirthDate");
 
 Employee emp = new Employee();
 
@@ -64,7 +64,7 @@ You can get the property value of a specified object by using the `CreateGetter`
 
 ```csharp
 var getterNameProperty = ExpressionUtils.CreateGetter<Employee, string>("Name");
-var getterBirthDateProperty = ExpressionUtils.CreateGetter<Employee, DateTime>("BirthDate);
+var getterBirthDateProperty = ExpressionUtils.CreateGetter<Employee, DateTime>("BirthDate");
 
 Employee emp1 = new Employee()
 {
