@@ -20,61 +20,25 @@ The following class contains implementation for getter/setter using expression A
 ```csharp
 public static class ExpressionUtils
 {
-    public static Action<TEntity, TProperty> CreateSetter<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> property)
+    public static Action<TEntity, TProperty> CreateSetter<TEntity, TProperty>(string name) where TEntity: class
     {
-        PropertyInfo propertyInfo = ExpressionUtils.GetProperty(property);
+        PropertyInfo propertyInfo = typeof(TEntity).GetProperty(name);
 
         ParameterExpression instance = Expression.Parameter(typeof(TEntity), "instance");
-        ParameterExpression parameter = Expression.Parameter(typeof(TProperty), "param");
+        ParameterExpression propertyValue = Expression.Parameter(typeof(TProperty), "propertyValue");
 
-        var body = Expression.Call(instance, propertyInfo.GetSetMethod(), parameter);
-        var parameters = new ParameterExpression[] { instance, parameter };
+		var body = Expression.Assign(Expression.Property(instance, name), propertyValue);
 
-        return Expression.Lambda<Action<TEntity, TProperty>>(body, parameters).Compile();
+        return Expression.Lambda<Action<TEntity, TProperty>>(body, instance, propertyValue).Compile();
     }
 
-    public static Func<TEntity, TProperty> CreateGetter<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> property)
+    public static Func<TEntity, TProperty> CreateGetter<TEntity, TProperty>(string name) where TEntity: class
     {
-        PropertyInfo propertyInfo = ExpressionUtils.GetProperty(property);
-
         ParameterExpression instance = Expression.Parameter(typeof(TEntity), "instance");
 
-        var body = Expression.Call(instance, propertyInfo.GetGetMethod());
-        var parameters = new ParameterExpression[] { instance };
+        var body = Expression.Property(instance, name);
 
-        return Expression.Lambda<Func<TEntity, TProperty>>(body, parameters).Compile();
-    }
-
-    public static PropertyInfo GetProperty<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expression)
-    {
-        var member = GetMemberExpression(expression).Member;
-        var property = member as PropertyInfo;
-        if (property == null)
-        {
-            throw new InvalidOperationException(string.Format("Member with Name '{0}' is not a property.", member.Name));
-        }
-        return property;
-    }
-
-    private static MemberExpression GetMemberExpression<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expression)
-    {
-        MemberExpression memberExpression = null;
-        if (expression.Body.NodeType == ExpressionType.Convert)
-        {
-            var body = (UnaryExpression)expression.Body;
-            memberExpression = body.Operand as MemberExpression;
-        }
-        else if (expression.Body.NodeType == ExpressionType.MemberAccess)
-        {
-            memberExpression = expression.Body as MemberExpression;
-        }
-
-        if (memberExpression == null)
-        {
-            throw new ArgumentException("Not a member access", "expression");
-        }
-
-        return memberExpression;
+        return Expression.Lambda<Func<TEntity, TProperty>>(body, instance).Compile();
     }
 }
 ```
@@ -99,8 +63,8 @@ Console.WriteLine("Name: {0}, DOB: {1}", emp.Name, emp.BirthDate);
 You can get the property value of a specified object by using the `CreateGetter` method.
 
 ```csharp
-var getterNameProperty = ExpressionUtils.CreateGetter<Employee, string>(x => x.Name);
-var getterBirthDateProperty = ExpressionUtils.CreateGetter<Employee, DateTime>(x => x.BirthDate);
+var getterNameProperty = ExpressionUtils.CreateGetter<Employee, string>("Name");
+var getterBirthDateProperty = ExpressionUtils.CreateGetter<Employee, DateTime>("BirthDate);
 
 Employee emp1 = new Employee()
 {
